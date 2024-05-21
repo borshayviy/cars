@@ -8,6 +8,7 @@ use App\Models\Categories;
 use GuzzleHttp\Promise\Create;
 use http\Env\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ArticlesController extends Controller
 {
@@ -27,6 +28,13 @@ class ArticlesController extends Controller
     }
     public function store(CreateArticleForm $request)
     {
+        $file = $request->file('src');
+        $filename = $file->getClientOriginalName();
+        $path = "articles/$filename";
+        $storage = Storage::disk('public')->put($path, file_get_contents($file));
+        $request->merge([
+            'image' => $path
+        ]);
         Articles::create($request->all());
         return redirect()->back()->with('alert', 'Ваша новость создана.');
 

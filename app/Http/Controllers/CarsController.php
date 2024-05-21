@@ -5,21 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCarForm;
 use App\Http\Requests\UpdateCarForm;
 use App\Models\Cars;
+use App\Repositories\Cars\CarRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class CarsController
 {
+    private $rep;
+
+    public function __construct(CarRepositoryInterface $repository)
+    {
+        $this->rep = $repository;
+    }
+
     public function index(Request $request)
     {
-        $model = Cars::where('year', '>',
-            $request->filled('year_from') ? $request->input('year_from') : 0
-        )
-            ->orderBy(
-                $request->filled('sort') ? $request->input('sort') : 'id', 'ASC')
-            ->get();
+        if ($request->filled('updateYear') && $request->input('updateYear') === 1) {
+            Artisan::call('car:synchronization');
+        }
         return view('cars.index', [
-            'cars' => $model
+            'cars' => $this->rep->getList($request->all())
         ]);
     }
 
@@ -30,13 +36,13 @@ class CarsController
 
     public function store(CreateCarForm $request)
     {
-        $car = Cars::create($request->all());
+        $car = $this->rep->store($request->all());
         return redirect()->back()->with('alert', 'Ваша машина создана: ' . $car->name);
     }
 
-    public function update(int $id, Request $request)
+    public function update(string $name, Request $request)
     {
-        $model = Cars::find($id);
+        $model = $this->rep->getOne('name');
         if (is_null($model)) {
            return redirect()->route('cars-home')->with('error', 'Такой машины нет');
         }
@@ -45,26 +51,22 @@ class CarsController
         ]);
     }
 
-    public function updateStore(int $id, UpdateCarForm $request)
+    public function updateStore(string $name, UpdateCarForm $request)
     {
-        $model = Cars::where('id', $id)
-            ->update(
-                $request->all()
-            );
+        $this->rep->update($name, $request->all());
         return redirect()->back();
     }
 
     public function destroy(Request $request)
     {
-        Cars::destroy($request->input('id'));
+        $this->rep->destroy($request->input('name'));
         return redirect()->back();
     }
 
-    public function show(int $id)
+    public function show(string $name)
     {
-        $car = Cars::find($id);
         return view('cars.show', [
-            'car' => $car
+            'car' => $this->rep->getOne($name)
         ]);
     }
 }

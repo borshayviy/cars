@@ -16,6 +16,7 @@ class Articles extends Model
         'body',
         'slug',
         'like',
+        'image',
         'view_count',
         'car_id',
         'category_id'

@@ -10,16 +10,23 @@ Route::controller(\App\Http\Controllers\CarsController::class)
     ->group(function () {
         Route::get('/', 'index')->name('home');
         Route::get('show/{id}', 'show')->name('show');
-        Route::get('create', 'create');
-        Route::post('store', 'store');
-        Route::get('update/{id}', 'update');
-        Route::get('update-store/{id}', 'updateStore');
-        Route::get('destroy', 'destroy');
+
+        Route::middleware(\App\Http\Middleware\AuthRule::class)->group(function () {
+            Route::get('create', 'create');
+            Route::post('store', 'store');
+            Route::get('update/{name}', 'update');
+            Route::get('update-store/{name}', 'updateStore');
+            Route::get('destroy', 'destroy');
+        });
+
+
 });
 
 Route::prefix('articles')->name('articles.')->group(function () {
     Route::get('/', [ArticlesController::class, 'index']) ->name('index');
+    Route::get('/show/{slug}', [ArticlesController::class, 'show']) ->name('show');
+
     Route::get('/create', [ArticlesController::class, 'create']) ->name('create');
     Route::post('/store', [ArticlesController::class, 'store']) ->name('store');
-    Route::get('/show/{slug}', [ArticlesController::class, 'show']) ->name('show');
+
 });

@@ -24,7 +24,8 @@ class CreateArticleForm extends FormRequest
         return [
             'title' => 'required|min:3|max:128',
             'body' => ['required'],
-            'category_id' => ['required', 'exists:App\Models\Categories,id']
+            'category_id' => ['required', 'exists:App\Models\Categories,id'],
+            'src' => ['required', 'image']
         ];
     }
 }

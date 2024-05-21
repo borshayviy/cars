@@ -17,7 +17,7 @@
         @foreach($cars as $car)
             <tr class="bg-white border-b">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <a href="{{route('cars.show', $car->id)}}" class="text-blue-800 hover:border-b">
+                    <a href="{{route('cars.show', $car->name)}}" class="text-blue-800 hover:border-b">
                         {{ $car->name }}</a>
                 </th>
                 <td class="px-6 py-4">
