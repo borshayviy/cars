@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[\App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -28,5 +30,12 @@ Route::prefix('articles')->name('articles.')->group(function () {
 
     Route::get('/create', [ArticlesController::class, 'create']) ->name('create');
     Route::post('/store', [ArticlesController::class, 'store']) ->name('store');
-
 });
+
+    Route::name('auth')->group(function () {
+        Route::get('/register', [RegisterController::class, 'index'])->name('register');
+        Route::post('/register/store', [RegisterController::class, 'store'])->name('register.store');
+        Route::get('/login', [LoginController::class, 'index'])->name('login');
+        Route::post('/authenticate', [LoginController::class, 'index'])->name('authenticate');
+        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    });

@@ -17,8 +17,17 @@
                     </div>
                 </div>
             </div>
-            <div class="flex items-center pr-2 text-white">
-                123
+            <div class="flex items-center gap-5 pr-2 text-white">
+                @auth()
+                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                    <form method="POST" action="{{ route('auth.logout') }}">
+                        @csrf
+                        <button type="submit" class="px-3 py-5 bg-gray-700">Выйти</button>
+                    </form>
+                @elseguest()
+                    <a href="{{ route('auth.login') }}" class="px-3 py-5">Войти</a>
+                    <a href="{{ route('auth.register') }}" class="px-3 py-5 bg-gray-700">Зарегистрироваться</a>
+                @endauth
             </div>
         </div>
     </div>

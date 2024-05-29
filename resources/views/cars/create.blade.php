@@ -10,6 +10,7 @@
             </ul>
         </div>
     @endif
+
     @if (session('alert'))
         <div class="alert alert-success" style="color: green">
             {{ session('alert') }}
@@ -17,7 +18,7 @@
     @endif
 
     <div class="my-20">
-        <form class="max-w-sm" method="POST" action="http://127.0.0.1:8000/cars/store">
+        <form class="max-w-sm" method="POST" action="{{route('cars.store')}}">
             @csrf
             <div class="mb-5">
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Название машины</label>
