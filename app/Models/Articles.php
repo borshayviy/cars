@@ -38,4 +38,8 @@ class Articles extends Model
     {
         return $this->hasOne(Categories::class, 'id', 'category_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comments::class, 'article_id', 'id');
+    }
 }

@@ -65,8 +65,12 @@ class CarsController
 
     public function show(string $name)
     {
+        $result = $this->rep->getOne($name);
+        if (is_null($result)) {
+            return redirect()->back();
+        }
         return view('cars.show', [
-            'car' => $this->rep->getOne($name)
+            'car' => $result
         ]);
     }
 }

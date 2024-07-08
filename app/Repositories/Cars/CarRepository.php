@@ -17,7 +17,7 @@ class CarRepository implements CarRepositoryInterface
 
     public function getOne(string $name)
     {
-        return Cars::where('name',$name)->first;
+        return Cars::with('articles')->where('name',$name)->first();
     }
 
     public function store(array $data)

@@ -12,4 +12,13 @@ class Cars extends Model
         'year',
         'description'
     ];
+
+    protected $casts = [
+        'year' => 'integer'
+    ];
+
+    public function articles()
+    {
+        return $this->hasMany(Articles::class, 'car_id', 'id');
+    }
 }

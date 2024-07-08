@@ -23,12 +23,18 @@
                 <td class="px-6 py-4">
                     {{ $car->description }}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-1 py-4">
                     {{ $car->year }}
+                    <form method="POST" action="{{ route('cart.store') }}">
+                        @csrf
+                        <input type="hidden" value="{{$car->id}}" name="id">
+                        <input type="hidden" value="{{$car->description}}" name="description">
+                        <input type="hidden" value="{{$car->year}}" name="year">
+                        <button type="submit" class="p-2 bg-green-400 text-black ml-3 ">купить</button>
+                    </form>
                 </td>
             </tr>
         @endforeach
-
         </tbody>
     </table>
 </div>

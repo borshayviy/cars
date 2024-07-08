@@ -8,7 +8,7 @@
                 {{$article->title}}
             </a>
             <div class="w-full">
-                <img src="{{ asset ( '/storage' . $article->image) }}" alt="" class="w-full h-24">
+                <img src="{{ asset ( 'storage/' . $article->image) }}" alt="" class="w-full h-24">
             </div>
             <div class="flex gap-2">
                 <span class="text-sm">
@@ -19,7 +19,6 @@
                     Лайки:
                     {{ $article->like }}
                 </span>
-
             </div>
         </div>
     @endforeach
